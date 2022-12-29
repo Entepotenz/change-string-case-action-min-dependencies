@@ -1,0 +1,78 @@
+name: Test
+
+on: [push]
+
+jobs:
+  test_job:
+    runs-on: ubuntu-latest
+    name: Test-Action
+    steps:
+      - uses: actions/checkout@v3
+      - id: test1
+        uses: ./
+        with:
+          string: 'XyZzY'
+      - name: Assert
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const lowercase = '${{ steps.test1.outputs.lowercase }}'
+            const uppercase = '${{ steps.test1.outputs.uppercase }}'
+            const capitalized = '${{ steps.test1.outputs.capitalized }}'
+            if ( lowercase !== 'xyzzy' || uppercase !== 'XYZZY' || capitalized !== 'Xyzzy' ) {
+              core.setFailed('test1 failed; \
+                lowercase="${{ steps.test1.outputs.lowercase }}"; \
+                uppercase="${{ steps.test1.outputs.uppercase }}"; \
+                capitalized="${{ steps.test1.outputs.capitalized }}"')
+            }
+      - id: test2
+        uses: ./
+        with:
+          string: 'xyZzY'
+      - name: Assert
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const lowercase = '${{ steps.test2.outputs.lowercase }}'
+            const uppercase = '${{ steps.test2.outputs.uppercase }}'
+            const capitalized = '${{ steps.test2.outputs.capitalized }}'
+            if ( lowercase !== 'xyzzy' || uppercase !== 'XYZZY' || capitalized !== 'Xyzzy' ) {
+              core.setFailed('test2 failed; \
+                lowercase="${{ steps.test2.outputs.lowercase }}"; \
+                uppercase="${{ steps.test2.outputs.uppercase }}"; \
+                capitalized="${{ steps.test2.outputs.capitalized }}"')
+            }
+      - id: test3
+        uses: ./
+        with:
+          string: 'ÄxÖöZzx%Z'
+      - name: Assert
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const lowercase = '${{ steps.test3.outputs.lowercase }}'
+            const uppercase = '${{ steps.test3.outputs.uppercase }}'
+            const capitalized = '${{ steps.test3.outputs.capitalized }}'
+            if ( lowercase !== 'äxöözzx%z' || uppercase !== 'ÄXÖÖZZX%Z' || capitalized !== 'Äxöözzx%z' ) {
+              core.setFailed('test3 failed; \
+                lowercase="${{ steps.test3.outputs.lowercase }}"; \
+                uppercase="${{ steps.test3.outputs.uppercase }}"; \
+                capitalized="${{ steps.test3.outputs.capitalized }}"')
+            }
+      - id: test4
+        uses: ./
+        with:
+          string: ''
+      - name: Assert
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const lowercase = '${{ steps.test4.outputs.lowercase }}'
+            const uppercase = '${{ steps.test4.outputs.uppercase }}'
+            const capitalized = '${{ steps.test4.outputs.capitalized }}'
+            if ( lowercase !== '' || uppercase !== '' || capitalized !== '' ) {
+              core.setFailed('test4 failed; \
+                lowercase="${{ steps.test4.outputs.lowercase }}"; \
+                uppercase="${{ steps.test4.outputs.uppercase }}"; \
+                capitalized="${{ steps.test4.outputs.capitalized }}"')
+            }

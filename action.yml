@@ -1,0 +1,29 @@
+name: "Change String Case minimal dependencies"
+description: "Github Action to make a string lowercase, uppercase, or capitalized; done purely in python3 without any dependency"
+author: <Entepotenz>
+
+inputs:
+  string:
+    description: string to convert
+    required: true
+outputs:
+  lowercase:
+    description: The input string, with any uppercase characters replaced with lowercase ones
+    value: ${{ steps.run-script.outputs.lowercase }}
+  uppercase:
+    description: The input string, with any lowercase characters replaced with uppercase ones
+    value: ${{ steps.run-script.outputs.uppercase }}
+  capitalized:
+    description: The input string, with any alphabetical characters lowercase, except for the first character, which is uppercased
+    value: ${{ steps.run-script.outputs.capitalized }}
+runs:
+  using: "composite"
+  steps:
+    - id: run-script
+      run: |
+        python3 ${{ github.action_path }}/src/script.py '${{ inputs.string }}'
+      shell: bash
+
+branding:
+  icon: paperclip
+  color: blue
