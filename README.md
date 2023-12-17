@@ -14,7 +14,7 @@ this runs in pure python without any additional packages or dependencies!
     - no dependency on a specific execution environment
         - no need to update the action
     - less code -> less bugs -> less security issues
-        - total number of code lines: 12
+        - total number of code lines: 14
 
 ## inspiration for this project:
 from this project: https://github.com/ASzc/change-string-case-action

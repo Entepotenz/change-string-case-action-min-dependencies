@@ -19,11 +19,13 @@ jobs:
             const lowercase = '${{ steps.test1.outputs.lowercase }}'
             const uppercase = '${{ steps.test1.outputs.uppercase }}'
             const capitalized = '${{ steps.test1.outputs.capitalized }}'
-            if ( lowercase !== 'xyzzy' || uppercase !== 'XYZZY' || capitalized !== 'Xyzzy' ) {
+            const dashnormalized = '${{ steps.test1.outputs.dashnormalized }}'
+            if ( lowercase !== 'xyzzy' || uppercase !== 'XYZZY' || capitalized !== 'Xyzzy' || dashnormalized !== 'xyzzy' ) {
               core.setFailed('test1 failed; \
                 lowercase="${{ steps.test1.outputs.lowercase }}"; \
                 uppercase="${{ steps.test1.outputs.uppercase }}"; \
-                capitalized="${{ steps.test1.outputs.capitalized }}"')
+                capitalized="${{ steps.test1.outputs.capitalized }}"; \
+                dashnormalized="${{ steps.test1.outputs.dashnormalized }}"')
             }
       - id: test2
         uses: ./
@@ -36,11 +38,12 @@ jobs:
             const lowercase = '${{ steps.test2.outputs.lowercase }}'
             const uppercase = '${{ steps.test2.outputs.uppercase }}'
             const capitalized = '${{ steps.test2.outputs.capitalized }}'
-            if ( lowercase !== 'xyzzy' || uppercase !== 'XYZZY' || capitalized !== 'Xyzzy' ) {
+            if ( lowercase !== 'xyzzy' || uppercase !== 'XYZZY' || capitalized !== 'Xyzzy' || dashnormalized !== 'xyzzy' ) {
               core.setFailed('test2 failed; \
-                lowercase="${{ steps.test2.outputs.lowercase }}"; \
-                uppercase="${{ steps.test2.outputs.uppercase }}"; \
-                capitalized="${{ steps.test2.outputs.capitalized }}"')
+                lowercase="${{ steps.test1.outputs.lowercase }}"; \
+                uppercase="${{ steps.test1.outputs.uppercase }}"; \
+                capitalized="${{ steps.test1.outputs.capitalized }}"; \
+                dashnormalized="${{ steps.test1.outputs.dashnormalized }}"')
             }
       - id: test3
         uses: ./
@@ -53,11 +56,12 @@ jobs:
             const lowercase = '${{ steps.test3.outputs.lowercase }}'
             const uppercase = '${{ steps.test3.outputs.uppercase }}'
             const capitalized = '${{ steps.test3.outputs.capitalized }}'
-            if ( lowercase !== 'äxöözzx%z' || uppercase !== 'ÄXÖÖZZX%Z' || capitalized !== 'Äxöözzx%z' ) {
+            if ( lowercase !== 'äxöözzx%z' || uppercase !== 'ÄXÖÖZZX%Z' || capitalized !== 'Äxöözzx%z' || dashnormalized !== 'äxöözzx-z' ) {
               core.setFailed('test3 failed; \
-                lowercase="${{ steps.test3.outputs.lowercase }}"; \
-                uppercase="${{ steps.test3.outputs.uppercase }}"; \
-                capitalized="${{ steps.test3.outputs.capitalized }}"')
+                lowercase="${{ steps.test1.outputs.lowercase }}"; \
+                uppercase="${{ steps.test1.outputs.uppercase }}"; \
+                capitalized="${{ steps.test1.outputs.capitalized }}"; \
+                dashnormalized="${{ steps.test1.outputs.dashnormalized }}"')
             }
       - id: test4
         uses: ./
@@ -70,9 +74,28 @@ jobs:
             const lowercase = '${{ steps.test4.outputs.lowercase }}'
             const uppercase = '${{ steps.test4.outputs.uppercase }}'
             const capitalized = '${{ steps.test4.outputs.capitalized }}'
-            if ( lowercase !== '' || uppercase !== '' || capitalized !== '' ) {
+            if ( lowercase !== '' || uppercase !== '' || capitalized !== '' || dashnormalized !== '' ) {
               core.setFailed('test4 failed; \
-                lowercase="${{ steps.test4.outputs.lowercase }}"; \
-                uppercase="${{ steps.test4.outputs.uppercase }}"; \
-                capitalized="${{ steps.test4.outputs.capitalized }}"')
+                lowercase="${{ steps.test1.outputs.lowercase }}"; \
+                uppercase="${{ steps.test1.outputs.uppercase }}"; \
+                capitalized="${{ steps.test1.outputs.capitalized }}"; \
+                dashnormalized="${{ steps.test1.outputs.dashnormalized }}"')
+            }
+      - id: test5
+        uses: ./
+        with:
+          string: 'Abc.Example!'
+      - name: Assert
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const lowercase = '${{ steps.test4.outputs.lowercase }}'
+            const uppercase = '${{ steps.test4.outputs.uppercase }}'
+            const capitalized = '${{ steps.test4.outputs.capitalized }}'
+            if ( lowercase !== 'abc.example!' || uppercase !== 'ABC.EXAMPLE!' || capitalized !== 'Abc.example!' || dashnormalized !== 'abc-example-' ) {
+              core.setFailed('test4 failed; \
+                lowercase="${{ steps.test1.outputs.lowercase }}"; \
+                uppercase="${{ steps.test1.outputs.uppercase }}"; \
+                capitalized="${{ steps.test1.outputs.capitalized }}"; \
+                dashnormalized="${{ steps.test1.outputs.dashnormalized }}"')
             }

@@ -16,6 +16,9 @@ outputs:
   capitalized:
     description: The input string, with any alphabetical characters lowercase, except for the first character, which is uppercased
     value: ${{ steps.run-script.outputs.capitalized }}
+  dashnormalized:
+    description: The input string, with any non alphanumeric characters replaced with dashes, which is then lowercased.
+    value: ${{ steps.run-script.outputs.dashnormalized }}
 runs:
   using: "composite"
   steps:
