@@ -28,6 +28,7 @@ This action accepts any string, and outputs three different versions of that str
 - lowercase (`XyZzY` -> `xyzzy`)
 - uppercase (`XyZzY` -> `XYZZY`)
 - capitalized (`Xyzzy` -> `Xyzzy`)
+- dashnormalized (`Xy.ZzY` -> `xy-zzy`)
 
 You can access the outputted strings through the job outputs context. See docs [here](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjobs_idoutputs), or the Example Usage section below.
 
@@ -65,6 +66,15 @@ capitalized=f'{uppercase[:1]}{lowercase[1:]}'
 
 Example: `XyZzY` -> `Xyzzy`
 
+### `dashnormalized`
+
+```python
+lowercase="${{ inputs.string }}".lower()
+dashnormalized=''.join(x if x.isalnum() else '-' for x in lowercase)
+```
+
+Example: `Xy.ZzY` -> `xy-zzy`
+
 ## Example Usage
 
 ```yaml
@@ -84,4 +94,6 @@ jobs:
         run: echo ${{ steps.string.outputs.uppercase }}
       - id: step4
         run: echo ${{ steps.string.outputs.capitalized }}
+      - id: step5
+        run: echo ${{ steps.string.outputs.dashnormalized }}
 ```
