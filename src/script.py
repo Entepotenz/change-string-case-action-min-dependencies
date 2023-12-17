@@ -1,7 +1,6 @@
 import sys
 import os
 
-
 if len(sys.argv) >= 2:
     lowercase=sys.argv[1].lower()
     uppercase=sys.argv[1].upper()
