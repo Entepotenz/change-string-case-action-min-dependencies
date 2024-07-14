@@ -24,7 +24,11 @@ runs:
   steps:
     - id: run-script
       run: |
-        python3 ${{ github.action_path }}/src/script.py '${{ inputs.string }}'
+        if [ "$RUNNER_OS" == "Windows" ]; then
+          python3 -Xutf8 "$GITHUB_ACTION_PATH\src\script.py" '${{ inputs.string }}'
+         else
+          python3 -Xutf8 "$GITHUB_ACTION_PATH/src/script.py" '${{ inputs.string }}'
+         fi
       shell: bash
 
 branding:
