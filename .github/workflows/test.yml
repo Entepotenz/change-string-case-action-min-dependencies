@@ -10,7 +10,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     name: Test-Action
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - id: test1
         uses: ./
         with:
