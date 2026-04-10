@@ -16,7 +16,7 @@ jobs:
         with:
           string: 'XyZzY'
       - name: Assert
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const lowercase = '${{ steps.test1.outputs.lowercase }}'
@@ -35,7 +35,7 @@ jobs:
         with:
           string: 'xyZzY'
       - name: Assert
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const lowercase = '${{ steps.test2.outputs.lowercase }}'
@@ -54,7 +54,7 @@ jobs:
         with:
           string: 'ÄxÖöZzx%Z'
       - name: Assert
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const lowercase = '${{ steps.test3.outputs.lowercase }}'
@@ -73,7 +73,7 @@ jobs:
         with:
           string: ''
       - name: Assert
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const lowercase = '${{ steps.test4.outputs.lowercase }}'
@@ -92,7 +92,7 @@ jobs:
         with:
           string: 'Abc.Example!'
       - name: Assert
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const lowercase = '${{ steps.test5.outputs.lowercase }}'
